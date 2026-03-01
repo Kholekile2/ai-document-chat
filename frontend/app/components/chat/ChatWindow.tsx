@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { streamChat, getConversations, getConversationMessages } from "@/app/lib/api";
-import { ChatMessage, Conversation } from "@/app/types/document";
+import { ChatMessage, Conversation, MessageDto } from "@/app/types/document";
 import { cn } from "@/app/lib/utils";
 
 interface ChatWindowProps {
@@ -24,6 +24,7 @@ export default function ChatWindow({ documentId, documentName, userId }: ChatWin
   // Load conversations when the component mounts
   useEffect(() => {
     loadConversations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documentId]);
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export default function ChatWindow({ documentId, documentName, userId }: ChatWin
   async function selectConversation(conversationId: string) {
     setActiveConversationId(conversationId);
     const msgs = await getConversationMessages(conversationId, userId);
-    setMessages(msgs.map((m: any) => ({ role: m.role, content: m.content })));
+    setMessages(msgs.map((m: MessageDto) => ({ role: m.role, content: m.content })));
   }
 
   function startNewConversation() {
@@ -161,7 +162,7 @@ export default function ChatWindow({ documentId, documentName, userId }: ChatWin
           {messages.length === 0 && (
             <div className="text-center py-20 text-gray-400">
               <p className="text-lg font-medium">Ask a question about this document</p>
-              <p className="text-sm mt-1">The AI will answer using only the document's content</p>
+              <p className="text-sm mt-1">The AI will answer using only the document&apos;s content</p>
             </div>
           )}
 
